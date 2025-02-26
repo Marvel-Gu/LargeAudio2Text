@@ -30,11 +30,12 @@ FFmpeg下载链接: https://ffmpeg.org/download.html#build-windows
 
 FFmpeg download link: https://ffmpeg.org/download.html#build-windows
 
-默认使用旧版本OpenAI SDK
+默认使用最新版本OpenAI SDK, 如果使用旧版, 请升级:
 
-By default, the old version of OpenAI SDK is used:
+The latest version of OpenAI SDK is used by default. If you use an older version, please upgrade:
+
 ```bash
-pip install openai==0.28
+pip install --upgrade openai
 ```
 
 ### 2. Configure File Paths and API Key
@@ -43,9 +44,9 @@ Set the following parameters in the code:
 
 - ffmpeg_path 和 ffprobe_path：FFmpeg 和 FFprobe 的路径。
   ffmpeg_path and ffprobe_path: Paths to FFmpeg and FFprobe.
-- openai.api_key：你的 OpenAI API 密钥。
+- OpenAI(api_key="")：你的 OpenAI API 密钥。
 
-  openai.api_key: Your OpenAI API key.
+  OpenAI(api_key=""): Your OpenAI API key.
 - audio_file_path：音频文件的路径。
 
   audio_file_path: Path to your audio file.
