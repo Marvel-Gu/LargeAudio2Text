@@ -9,6 +9,7 @@ This project aims to transcribe audio files into text using OpenAI's Whisper mod
 - 支持多种音频格式（mp3, mp4, mpeg, mpga, m4a, wav, webm）。  
   Supports multiple audio formats (mp3, mp4, mpeg, mpga, m4a, wav, webm).  
 - 自动分割音频文件（支持按时间长度分割）。
+
   Automatically splits audio files (based on duration).  
 - 使用 OpenAI Whisper 模型进行高精度转录。  
   Uses the OpenAI Whisper model for high-accuracy transcription.  
@@ -27,7 +28,10 @@ Ensure the following tools and libraries are installed:
 
 FFmpeg下载链接: https://ffmpeg.org/download.html#build-windows
 
-默认使用旧版本OpenAI SDK:
+FFmpeg download link: https://ffmpeg.org/download.html#build-windows
+
+默认使用旧版本OpenAI SDK
+
 By default, the old version of OpenAI SDK is used:
 ```bash
 pip install openai==0.28
@@ -64,4 +68,5 @@ language: Specifies the transcription language (default is Chinese).
 
 ### 3. Temporary File Deletion 删除临时文件
 脚本会在转录完成后自动删除生成的音频片段文件。
+
 The script will automatically delete the generated audio chunk files after transcription.
