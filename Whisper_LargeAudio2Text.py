@@ -1,16 +1,13 @@
 import os
 import openai
 import subprocess
-
+from openai import OpenAI
 
 # 手动指定 ffmpeg 和 ffprobe 的路径（根据你的安装路径修改）
 # Manually specify the path of ffmpeg and ffprobe (modify according to your installation path)
 ffmpeg_path = ""  # eg. "D:\\ffmpeg-7.0.2-essentials_build\\ffmpeg-7.0.2-essentials_build\\bin\\ffmpeg.exe"
-ffprobe_path = ""  # eg. "D:\\ffmpeg-7.0.2-essentials_build\\ffmpeg-7.0.2-essentials_build\\bin\\ffprobe.exe
+ffprobe_path = ""  # eg. "D:\\ffmpeg-7.0.2-essentials_build\\ffmpeg-7.0.2-essentials_build\\bin\\ffprobe.exe"
 
-# 设置OpenAI API密钥
-# Set OpenAI API key
-openai.api_key = ""
 
 # 音频文件路径
 # Audio file path
@@ -52,26 +49,23 @@ def split_audio(file_path, chunk_size=10 * 60):  # 每段10分钟（单位：秒
 # 调用OpenAI API进行转录, prompt为可选参数，可以根据需要调整, 如果没有prompt, 默认会转换为繁体中文
 # Call the OpenAI API for transcription, prompt is an optional parameter, which can be adjusted as needed.
 def transcribe_audio(file_path, prompt=None):
+    client = OpenAI(api_key="")  # SECRET KEY
     with open(file_path, "rb") as audio_file:
-        transcript = openai.Audio.transcribe(
-            file=audio_file,
+        response = client.audio.transcriptions.create(
             model="whisper-1",
-            response_format="text",
-            prompt="以下是普通话的句子。",
-            language="zh"
+            file=audio_file,
+            prompt="以下是普通话的句子。",  # optional parameter, adjust as needed
+            language="zh"  # optional parameter, adjust as needed
         )
-    return transcript
+    return response.text
 
 
 def main():
-    # 分割音频
     chunks = split_audio(audio_file_path)
 
-    # 初始化转录结果
     transcripts = []
     previous_transcript = None
 
-    # 转录每个音频片段
     for i, chunk_path in enumerate(chunks):
         # 使用前一个片段的最后224个字符作为prompt
         if previous_transcript:
@@ -79,7 +73,6 @@ def main():
         else:
             prompt = None
 
-        # 调用API进行转录
         transcript = transcribe_audio(chunk_path, prompt=prompt)
         transcripts.append(transcript)
 
