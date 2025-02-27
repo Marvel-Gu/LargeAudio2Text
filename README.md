@@ -1,9 +1,9 @@
 # LargeAudio2Text
 
 ## Introduction
-本项目旨在通过 OpenAI 的 Whisper 模型将音频文件转录为文本。为了处理较大的音频文件，项目支持将音频分割为较小的片段，并逐段进行转录。
+本项目旨在通过 OpenAI 的 Whisper 模型将音频文件转录为文本。为了处理较大的音频文件，项目支持将音频分割为较小的片段，并逐段进行转录。主要满足自己将播客音频转为文字的需求。
 
-This project aims to transcribe audio files into text using OpenAI's Whisper model. To handle large audio files, the project supports splitting the audio into smaller chunks and transcribing them individually.
+This project aims to transcribe audio files into text using OpenAI's Whisper model. To handle large audio files, the project supports splitting the audio into smaller chunks and transcribing them individually. It mainly meets my own needs of converting podcast audio into text.
 
 ## Features  
 - 支持多种音频格式（mp3, mp4, mpeg, mpga, m4a, wav, webm）。  
