@@ -1,12 +1,12 @@
 import os
-import openai
 import subprocess
 from openai import OpenAI
+import math
 
 # 手动指定 ffmpeg 和 ffprobe 的路径（根据你的安装路径修改）
 # Manually specify the path of ffmpeg and ffprobe (modify according to your installation path)
-ffmpeg_path = ""  # eg. "D:\\ffmpeg-7.0.2-essentials_build\\ffmpeg-7.0.2-essentials_build\\bin\\ffmpeg.exe"
-ffprobe_path = ""  # eg. "D:\\ffmpeg-7.0.2-essentials_build\\ffmpeg-7.0.2-essentials_build\\bin\\ffprobe.exe"
+ffmpeg_path = ""  # e.g. "D:\\ffmpeg-7.0.2-essentials_build\\ffmpeg-7.0.2-essentials_build\\bin\\ffmpeg.exe"
+ffprobe_path = ""  # e.g. "D:\\ffmpeg-7.0.2-essentials_build\\ffmpeg-7.0.2-essentials_build\\bin\\ffprobe.exe"
 
 
 # 音频文件路径
@@ -23,10 +23,27 @@ def get_audio_duration(file_path):
     return float(result.stdout.strip())
 
 
-# 分割音频文件, 这里的分割需要根据你的音频文件大小和时长来决定(仅支持mp3, mp4, mpeg, mpga, m4a, wav, and webm类型), 因为whisper仅支持小于 25 MB 的文件
-# Split the audio file. The split here needs to be determined according to the size and duration of your audio file
-# (only supports mp3, mp4, mpeg, mpga, m4a, wav, and webm types), because whisper only supports files smaller than 25 MB
-def split_audio(file_path, chunk_size=10 * 60):  # 每段10分钟（单位：秒）, 根据需要调整 Each segment is 10 minutes (unit: seconds), adjust as needed
+# 获取音频文件的大小（字节）
+# Get the size of the audio file (bytes)
+def get_audio_size(file_path):
+    return os.path.getsize(file_path)
+
+
+# 计算最大分割时长
+# Calculate the max split duration
+def get_max_chunk_size(audio_size_bytes, audio_duration):
+    max_file_size = 25 * 1024 * 1024
+
+    num_chunks_size = math.ceil(audio_size_bytes / max_file_size)
+
+    chunk_size = audio_duration / num_chunks_size
+
+    return math.ceil(chunk_size)
+
+
+# 分割音频文件
+# Split the audio file
+def split_audio(file_path, chunk_size):
     duration = get_audio_duration(file_path)
     num_chunks = int(duration / chunk_size) + 1
     chunks = []
@@ -54,14 +71,21 @@ def transcribe_audio(file_path, prompt=None):
         response = client.audio.transcriptions.create(
             model="whisper-1",
             file=audio_file,
-            prompt="以下是普通话的句子。",  # optional parameter, adjust as needed
+            prompt="",  # optional parameter, adjust as needed
             language="zh"  # optional parameter, adjust as needed
         )
     return response.text
 
 
 def main():
-    chunks = split_audio(audio_file_path)
+    duration = get_audio_duration(audio_file_path)
+    size = get_audio_size(audio_file_path)
+    chunk_size = get_max_chunk_size(size, duration)
+    # 默认为最大的可取值, 可以根据自身需求修改, 默认单位为秒
+    # The default value is the maximum possible value,
+    # which can be modified according to your needs. The default unit is seconds.
+    # e.g. chunks = split_audio(audio_file_path,chunk_size=10*60)
+    chunks = split_audio(audio_file_path, chunk_size)
 
     transcripts = []
     previous_transcript = None
@@ -95,3 +119,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
