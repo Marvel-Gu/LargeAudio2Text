@@ -52,7 +52,7 @@ Set the following parameters in the code:
   audio_file_path: Path to your audio file.
 
 ## Usage Instructions
-### 1. 最大分割时长 get_max_chunk_size
+### 1. Max Chunk Size 最大分割时长 
 根据文件大小和时长, 计算出最大的分割时长
 
 Calculate the maximum split duration based on file size and duration
@@ -67,8 +67,7 @@ By default, the audio file will be split into multiple segments based on the `ma
 
 - prompt：可选参数，用于提供上下文以提高转录准确性。默认为"", 加上合适的prompt会使转录效果更好, 且帮助转录为简体字(中文默认转录成繁体字)。
 
-prompt: An optional parameter to provide context for better transcription accuracy. The default is "以下是普通话的句子。", which helps transcribe it into simplified Chinese.
-
+prompt: An optional parameter to provide context for better transcription accuracy. The default is "".
 - language：指定转录语言（默认为中文）。
 
 language: Specifies the transcription language (default is Chinese).
