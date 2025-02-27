@@ -52,14 +52,20 @@ Set the following parameters in the code:
   audio_file_path: Path to your audio file.
 
 ## Usage Instructions
-### 1. Audio Splitting 音频分割
-音频文件将根据指定的时间长度（默认 10 分钟）分割为多个片段。你可以根据需要调整 chunk_size 参数。
+### 1. 最大分割时长 get_max_chunk_size
+根据文件大小和时长, 计算出最大的分割时长
 
-Audio files will be split into chunks based on the specified duration (default is 10 minutes). You can adjust the chunk_size parameter as needed.
+Calculate the maximum split duration based on file size and duration
 
-### 2. Transcription Parameters 转录参数
+### 2. Audio Splitting 音频分割
+音频文件默认将根据最大分割时长分割为多个片段。但你也可以根据需要调整 chunk_size 参数。
 
-- prompt：可选参数，用于提供上下文以提高转录准确性。默认为"以下是普通话的句子。", 帮助转录为简体字。
+By default, the audio file will be split into multiple segments based on the `max_chunk_size`. But you can adjust the chunk_size parameter as needed.
+
+
+### 3. Transcription Parameters 转录参数
+
+- prompt：可选参数，用于提供上下文以提高转录准确性。默认为"", 加上合适的prompt会使转录效果更好, 且帮助转录为简体字(中文默认转录成繁体字)。
 
 prompt: An optional parameter to provide context for better transcription accuracy. The default is "以下是普通话的句子。", which helps transcribe it into simplified Chinese.
 
@@ -67,7 +73,7 @@ prompt: An optional parameter to provide context for better transcription accura
 
 language: Specifies the transcription language (default is Chinese).
 
-### 3. Temporary File Deletion 删除临时文件
+### 4. Temporary File Deletion 删除临时文件
 脚本会在转录完成后自动删除生成的音频片段文件。
 
 The script will automatically delete the generated audio chunk files after transcription.
